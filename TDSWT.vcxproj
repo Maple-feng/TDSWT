@@ -42,8 +42,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <ExecutablePath>$(VC_ExecutablePath_x86);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>
-    <IncludePath>C:\Boost\include\boost-1_58;C:\opencv2.4.12\include;C:\opencv2.4.12\include\opencv;C:\opencv2.4.12\include\opencv2;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>C:\Boost\lib;C:\opencv2.4.12\x86\vc12\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+    <IncludePath>H:\Program Files\opencv\build\include;H:\Program Files\opencv\build\include\opencv2;H:\Program Files\opencv\build\include\opencv;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>H:\Program Files\opencv\build\x86\vc12\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -55,12 +55,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>H:\boost_1_58_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_core2412d.lib;opencv_highgui2412d.lib;opencv_contrib2412d.lib;opencv_imgproc2412d.lib;opencv_features2d2412d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_calib3d2412d.lib;opencv_contrib2412d.lib;opencv_core2412d.lib;opencv_features2d2412d.lib;opencv_flann2412d.lib;opencv_gpu2412d.lib;opencv_highgui2412d.lib;opencv_imgproc2412d.lib;opencv_legacy2412d.lib;opencv_ml2412d.lib;opencv_nonfree2412d.lib;opencv_objdetect2412d.lib;opencv_ocl2412d.lib;opencv_photo2412d.lib;opencv_stitching2412d.lib;opencv_superres2412d.lib;opencv_ts2412d.lib;opencv_video2412d.lib;opencv_videostab2412d.lib;opencv_calib3d2412.lib;opencv_contrib2412.lib;opencv_core2412.lib;opencv_features2d2412.lib;opencv_flann2412.lib;opencv_gpu2412.lib;opencv_highgui2412.lib;opencv_imgproc2412.lib;opencv_legacy2412.lib;opencv_ml2412.lib;opencv_nonfree2412.lib;opencv_objdetect2412.lib;opencv_ocl2412.lib;opencv_photo2412.lib;opencv_stitching2412.lib;opencv_superres2412.lib;opencv_ts2412.lib;opencv_video2412.lib;opencv_videostab2412.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <AdditionalLibraryDirectories>H:\boost_1_58_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
