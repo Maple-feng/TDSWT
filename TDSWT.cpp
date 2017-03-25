@@ -35,11 +35,15 @@ using namespace std;
 using namespace cv;
 using namespace DetectText;
 
+//图像转换
 void convertToFloatImage(Mat& byteImage, Mat& floatImage)
 {
-	byteImage.convertTo(floatImage, CV_32FC1, 1 / 255.);
+	byteImage.convertTo(floatImage, CV_32FC1, 1.0 / 255.0, 0);
+	//函数将源矩阵中的像素值转换为目标类型
+	//convertTo(目标矩阵,需要的输出的矩阵类型,比例因子,将输入数组元素按比例缩放后添加的值)
 }
 
+//标准库的异常
 class FeatureError : public std::exception 
 {
 	std::string message;
@@ -62,6 +66,8 @@ Mat loadByteImage(const char * name)
 		return Mat();
 	}
 	cvtColor(image, image, CV_BGR2RGB);
+	//颜色空间转换（灰度空间转换）
+	//cvtColor(输入图像,输出图像,颜色空间转换标识符)
 	return image;
 }
 
@@ -74,7 +80,7 @@ Mat loadFloatImage(const char * name)
 	}
 	cvtColor(image, image, CV_BGR2RGB);
 	Mat floatingImage(image.size(), CV_32FC3);
-	image.convertTo(floatingImage, CV_32F, 1 / 255.);
+	image.convertTo(floatingImage, CV_32F, 1.0 / 255.0, 0);
 	return floatingImage;
 }
 

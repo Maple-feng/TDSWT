@@ -1,19 +1,19 @@
-﻿生成启动时间为 2017/3/17 12:06:33。
+﻿生成启动时间为 2017/3/25 13:20:26。
      1>项目“E:\GitHub\TDSWT\TDSWT.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          H:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IH:\boost_1_58_0 /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\TDSWT.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt TextDetection.cpp
          TextDetection.cpp
      1>e:\github\tdswt\textdetection.cpp(120): warning C4056: 浮点常量算术溢出
      1>e:\github\tdswt\textdetection.cpp(169): warning C4056: 浮点常量算术溢出
-     1>e:\github\tdswt\textdetection.cpp(428): warning C4305: “初始化”: 从“double”到“float”截断
-     1>e:\github\tdswt\textdetection.cpp(442): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+     1>e:\github\tdswt\textdetection.cpp(429): warning C4305: “初始化”: 从“double”到“float”截断
      1>e:\github\tdswt\textdetection.cpp(443): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-     1>e:\github\tdswt\textdetection.cpp(759): warning C4305: “初始化”: 从“double”到“float”截断
-     1>e:\github\tdswt\textdetection.cpp(760): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-     1>e:\github\tdswt\textdetection.cpp(760): warning C4244: “+=”: 从“double”转换到“float”，可能丢失数据
-     1>e:\github\tdswt\textdetection.cpp(814): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+     1>e:\github\tdswt\textdetection.cpp(444): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+     1>e:\github\tdswt\textdetection.cpp(760): warning C4305: “初始化”: 从“double”到“float”截断
+     1>e:\github\tdswt\textdetection.cpp(761): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+     1>e:\github\tdswt\textdetection.cpp(761): warning C4244: “+=”: 从“double”转换到“float”，可能丢失数据
      1>e:\github\tdswt\textdetection.cpp(815): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-     1>e:\github\tdswt\textdetection.cpp(976): warning C4305: “初始化”: 从“double”到“const float”截断
+     1>e:\github\tdswt\textdetection.cpp(816): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+     1>e:\github\tdswt\textdetection.cpp(977): warning C4305: “初始化”: 从“double”到“const float”截断
      1>e:\github\tdswt\textdetection.cpp(120): warning C4756: 常量算法中溢出
      1>e:\github\tdswt\textdetection.cpp(120): warning C4756: 常量算法中溢出
      1>e:\github\tdswt\textdetection.cpp(169): warning C4756: 常量算法中溢出
@@ -26,4 +26,4 @@
 
 生成成功。
 
-已用时间 00:00:08.21
+已用时间 00:00:08.11

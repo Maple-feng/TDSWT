@@ -333,8 +333,9 @@ Mat textDetection (const Mat& input, bool dark_on_light) {
 #if FLAG_OUT_INTERMEDIATE_IMG
 
     // Create gradient
-	imwrite ( "canny.png", edgeImage);
+	imwrite("canny.png", edgeImage); 
 	imshow("Edge image", edgeImage);
+	//imshow("Edge image", edgeImage);
 #endif X, gradient Y
     Mat gaussianImage( input.size(), CV_32FC1);
     grayImage.convertTo(gaussianImage, CV_32FC1, 1./255.);
