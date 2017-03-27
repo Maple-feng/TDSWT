@@ -234,7 +234,7 @@ void renderChainsWithBoxes (Mat& SWTImage,
                    std::vector<Chain> & chains,
                    std::vector<SWTPointPair2d > & compBB,
                    Mat& output) {
-    // keep track of included components
+    // keep track of included components	(跟踪包含的组件)
     std::vector<bool> included;
     included.reserve(components.size());
     for (unsigned int i = 0; i != components.size(); i++) {
@@ -283,7 +283,7 @@ void renderChains (Mat& SWTImage,
                    std::vector<std::vector<SWTPoint2d> > & components,
                    std::vector<Chain> & chains,
                    Mat& output) {
-    // keep track of included components
+    // keep track of included components  (跟踪包含的组件)
     std::vector<bool> included;
     included.reserve(components.size());
     for (unsigned int i = 0; i != components.size(); i++) {
@@ -313,11 +313,11 @@ Mat textDetection (const Mat& input, bool dark_on_light) {
 
     std::cout << "Running textDetection with dark_on_light " << dark_on_light << std::endl;
 
-    // Convert to grayscale
+    // Convert to grayscale  (转换为灰度级)
     Mat grayImage( input.size(), CV_8UC1 );
     cvtColor ( input, grayImage, CV_RGB2GRAY );
 	imwrite("gray.png", grayImage);
-    // Create Canny Image
+    // Create Canny Image	(创建Canny图像)
 	double threshold_low = 80;// 175;
 	double threshold_high = 160;// 320;
 #if 1//new threshold based on Otsu
@@ -332,7 +332,7 @@ Mat textDetection (const Mat& input, bool dark_on_light) {
     Canny(grayImage, edgeImage, threshold_low, threshold_high, 3) ;
 #if FLAG_OUT_INTERMEDIATE_IMG
 
-    // Create gradient
+    // Create gradient  (创建梯度)
 	imwrite("canny.png", edgeImage); 
 	imshow("Edge image", edgeImage);
 	//imshow("Edge image", edgeImage);
@@ -348,6 +348,7 @@ Mat textDetection (const Mat& input, bool dark_on_light) {
     GaussianBlur(gradientY, gradientY, Size(3, 3), 0);
 
     // Calculate SWT and return ray vectors
+	//计算SWT并返回射线矢量
     std::vector<Ray> rays;
     Mat SWTImage( input.size(), CV_32FC1 );
     for( int row = 0; row < input.rows; row++ ){
@@ -378,6 +379,7 @@ Mat textDetection (const Mat& input, bool dark_on_light) {
     // Calculate legally connect components from SWT and gradient image.
     // return type is a vector of vectors, where each outer vector is a component and
     // the inner vector contains the (y,x) of each pixel in that component.
+	//计算从SWT和渐变图像的合法连接组件。返回类型是向量的向量，其中每个外部向量是一个分量，内部向量包含该组件中每个像素的（y，x）。
     std::vector<std::vector<SWTPoint2d> > components = findLegallyConnectedComponents(SWTImage, rays);
 
     // Filter the components
@@ -387,15 +389,15 @@ Mat textDetection (const Mat& input, bool dark_on_light) {
     std::vector<float> compMedians;
     std::vector<SWTPoint2d> compDimensions;
     filterComponents(SWTImage, components, validComponents, compCenters, compMedians, compDimensions, compBB );
-
+	//过滤组件
     Mat output3( input.size(), CV_8UC3 );
-    renderComponentsWithBoxes (SWTImage, validComponents, compBB, output3);
+    renderComponentsWithBoxes (SWTImage, validComponents, compBB, output3);//渲染组件与框
 #if FLAG_OUT_INTERMEDIATE_IMG
     imwrite ( "components.png",output3);
 	imshow("Components", output3);
 #endif
 
-    // Make chains of components
+    // Make chains of components	(制作组件链)
     std::vector<Chain> chains;
     chains = makeChains(input, validComponents, compCenters, compMedians, compDimensions, compBB);
 
@@ -440,13 +442,14 @@ void strokeWidthTransform (const Mat& edgeImage,
                 std::vector<SWTPoint2d> points;
                 points.push_back(p);
 
-                float curX = (float)col + 0.5;
-                float curY = (float)row + 0.5;
+                float curX = (float)col + 0.059;//改动处
+                float curY = (float)row + 0.059;
+
                 int curPixX = col;
                 int curPixY = row;
                 float G_x = gradientX.at<float>(row, col);
                 float G_y = gradientY.at<float>(row, col);
-                // normalize gradient
+                // normalize gradient	(归一化梯度)
                 float mag = sqrt( (G_x * G_x) + (G_y * G_y) );
                 if (dark_on_light){
                     G_x = -G_x/mag;
@@ -463,6 +466,7 @@ void strokeWidthTransform (const Mat& edgeImage,
                         curPixX = (int)(floor(curX));
                         curPixY = (int)(floor(curY));
                         // check if pixel is outside boundary of image
+						//检查像素是否在图像外边界
                         if (curPixX < 0 || (curPixX >= SWTImage.cols) || curPixY < 0 || (curPixY >= SWTImage.rows)) {
                             break;
                         }
@@ -730,15 +734,17 @@ void filterComponents(Mat& SWTImage,
         compCenters.reserve(components.size());
         compMedians.reserve(components.size());
         compDimensions.reserve(components.size());
-        // bounding boxes
+        // bounding boxes(边框)
         compBB.reserve(components.size());
         for (std::vector<std::vector<SWTPoint2d> >::iterator it = components.begin(); it != components.end();it++) {
             // compute the stroke width mean, variance, median
+			//计算笔画宽度的平均值，方差，中位数
             float mean, variance, median;
             int minx, miny, maxx, maxy;
             componentStats(SWTImage, (*it), mean, variance, median, minx, miny, maxx, maxy);
 
             // check if variance is less than half the mean
+			//检查方差是否小于平均值的一半
             if (variance > 0.5 * mean) {
                  continue;
             }
@@ -746,7 +752,7 @@ void filterComponents(Mat& SWTImage,
             float length = (float)(maxx-minx+1);
             float width = (float)(maxy-miny+1);
 
-            // check font height
+            // check font height(检查字体高度)
             if (width > 300) {
                 continue;
             }
@@ -756,7 +762,7 @@ void filterComponents(Mat& SWTImage,
             float rmaxx = (float)maxx;
             float rminy = (float)miny;
             float rmaxy = (float)maxy;
-            // compute the rotated bounding box
+            // compute the rotated bounding box(计算旋转的边界框)
             float increment = 1./36.;
             for (float theta = increment * PI; theta<PI/2.0; theta += increment * PI) {
                 float xmin,xmax,ymin,ymax,xtemp,ytemp,ltemp,wtemp;
@@ -781,12 +787,13 @@ void filterComponents(Mat& SWTImage,
                 }
             }
             // check if the aspect ratio is between 1/10 and 10
+			//检查纵横比是否在1/10和10之间
             if (length/width < 1./10. || length/width > 10.) {
                 continue;
             }
 
-            // compute the diameter TODO finish
-            // compute dense representation of component
+            // compute the diameter TODO finish		(计算TODO直径)
+            // compute dense representation of component	(计算组件的密集表示)
             std::vector <std::vector<float> > denseRepr;
             denseRepr.reserve(maxx-minx+1);
             for (int i = 0; i < maxx-minx+1; i++) {
@@ -800,7 +807,7 @@ void filterComponents(Mat& SWTImage,
             for (std::vector<SWTPoint2d>::iterator pit = it->begin(); pit != it->end(); pit++) {
                 (denseRepr[pit->x - minx])[pit->y - miny] = 1;
             }
-            // create graph representing components
+            // create graph representing components	(创建表示组件的图形)
             const int num_nodes = it->size();
             /*
             E edges[] = { E(0,2),
@@ -901,7 +908,7 @@ std::vector<Chain> makeChains( const Mat& colorImage,
                  std::vector<SWTPoint2d> & compDimensions,
                  std::vector<SWTPointPair2d > & compBB) {
     assert (compCenters.size() == components.size());
-    // make vector of color averages
+    // make vector of color averages	(使矢量的颜色平均)
     std::vector<Point3dFloat> colorAverages;
     colorAverages.reserve(components.size());
     for (std::vector<std::vector<SWTPoint2d> >::iterator it = components.begin(); it != components.end();it++) {
@@ -923,10 +930,11 @@ std::vector<Chain> makeChains( const Mat& colorImage,
     }
 
     // form all eligible pairs and calculate the direction of each
+	//形成所有符合条件的对，并计算每个对的方向
     std::vector<Chain> chains;
     for ( unsigned int i = 0; i < components.size(); i++ ) {
         for ( unsigned int j = i + 1; j < components.size(); j++ ) {
-            // TODO add color metric
+            // TODO add color metric	(TODO添加颜色指标)
             if ( (compMedians[i]/compMedians[j] <= 2.0 || compMedians[j]/compMedians[i] <= 2.0) &&
                  (compDimensions[i].y/compDimensions[j].y <= 2.0 || compDimensions[j].y/compDimensions[i].y <= 2.0)) {
                 float dist = (compCenters[i].x - compCenters[j].x) * (compCenters[i].x - compCenters[j].x) +
@@ -975,7 +983,7 @@ std::vector<Chain> makeChains( const Mat& colorImage,
 
     std::cerr << std::endl;
     const float strictness = PI/6.0;
-    //merge chains
+    //merge chains	(合并链)
     int merges = 1;
     while (merges > 0) {
         for (unsigned int i = 0; i < chains.size(); i++) {
