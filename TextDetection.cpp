@@ -753,7 +753,7 @@ void filterComponents(Mat& SWTImage,
             float width = (float)(maxy-miny+1);
 
             // check font height(检查字体高度)
-            if (width > 300) {
+			if (width > 300 || width < 10) {
                 continue;
             }
 
@@ -800,7 +800,7 @@ void filterComponents(Mat& SWTImage,
                 std::vector<float> tmp;
                 tmp.reserve(maxy-miny+1);
                 denseRepr.push_back(tmp);
-                for (int j = 0; j < maxy-miny+1; j++) {\
+                for (int j = 0; j < maxy-miny+1; j++) {
                     denseRepr[i].push_back(0);
                 }
             }

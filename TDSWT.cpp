@@ -135,7 +135,7 @@ int mainTextDetection(int argc, char** argv)
 	imwrite("outbin.png", outBin);
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-	cvWaitKey();
+	cvWaitKey(0);
 	return 0;
 }
 
