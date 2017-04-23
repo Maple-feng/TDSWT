@@ -17,6 +17,7 @@
     along with DetectText.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "stdafx.h"
+#include <stdlib.h>
 #define FLAG_OUT_INTERMEDIATE_IMG	1
 #define CODE_REVISIONS	1
 #define FLAG_ENABLE_BOOST	1
@@ -53,11 +54,11 @@
 using namespace cv;
 
 #include "TextDetection.h"
-
+#pragma warning(disable: 4996)
 #define PI 3.14159265
-
+char name_piture[100];//批量图片名
+static int num_piture = 0;
 namespace DetectText {
-
 const Scalar BLUE (255, 0, 0);
 const Scalar GREEN(0, 255, 0);
 const Scalar RED  (0, 0, 255);
@@ -333,8 +334,16 @@ Mat textDetection (const Mat& input, bool dark_on_light) {
 #if FLAG_OUT_INTERMEDIATE_IMG
 
     // Create gradient  (创建梯度)
-	imwrite("canny.png", edgeImage); 
-	imshow("Edge image", edgeImage);
+	///imwrite("canny.png", edgeImage); 
+	num_piture++;
+	memset(name_piture, 0, sizeof(name_piture));
+	char str[30];
+	itoa(num_piture, str, 10);
+	strcpy_s(name_piture, "D:\\test\\");
+	strcat_s(name_piture, str);
+	strcat_s(name_piture, "_canny.png");
+	imwrite(name_piture, edgeImage);
+	///imshow("Edge image", edgeImage);
 	//imshow("Edge image", edgeImage);
 #endif X, gradient Y
     Mat gaussianImage( input.size(), CV_32FC1);
@@ -362,17 +371,31 @@ Mat textDetection (const Mat& input, bool dark_on_light) {
 	Mat output1(input.size(), CV_8UC1);
 	SWTImage.convertTo(output1, CV_8UC1, 255);
 #if FLAG_OUT_INTERMEDIATE_IMG
-	imshow("SWT1", SWTImage);
-	imwrite("SWT1.png", output1);
+	memset(name_piture, 0, sizeof(name_piture));
+	memset(str, 0, sizeof(str));
+	itoa(num_piture, str, 10);
+	strcpy_s(name_piture, "D:\\test\\");
+	strcat_s(name_piture, str);
+	strcat_s(name_piture, "_SWT1.png");
+	imwrite(name_piture, output1);
+	///imshow("SWT1", SWTImage);
+	///imwrite("SWT1.png", output1);
 #endif
 
     Mat output2( input.size(), CV_32FC1 );
-    normalizeImage (SWTImage, output2);
+    normalizeImage (SWTImage, output2);//归一化处理
     Mat saveSWT( input.size(), CV_8UC1 );
     output2.convertTo(saveSWT, CV_8UC1, 255);
 #if FLAG_OUT_INTERMEDIATE_IMG
-    imwrite ( "SWT.png", saveSWT);
-	imshow("SWT image", SWTImage);
+	memset(name_piture, 0, sizeof(name_piture));
+	memset(str, 0, sizeof(str));
+	itoa(num_piture, str, 10);
+	strcpy_s(name_piture, "D:\\test\\");
+	strcat_s(name_piture, str);
+	strcat_s(name_piture, "_SWT.png");
+	imwrite(name_piture, output1);
+    ///imwrite ( "SWT.png", saveSWT);
+	///imshow("SWT image", SWTImage);
 #endif
 
 #if FLAG_ENABLE_BOOST
@@ -393,8 +416,15 @@ Mat textDetection (const Mat& input, bool dark_on_light) {
     Mat output3( input.size(), CV_8UC3 );
     renderComponentsWithBoxes (SWTImage, validComponents, compBB, output3);//渲染组件与框
 #if FLAG_OUT_INTERMEDIATE_IMG
-    imwrite ( "components.png",output3);
-	imshow("Components", output3);
+	memset(name_piture, 0, sizeof(name_piture));
+	memset(str, 0, sizeof(str));
+	itoa(num_piture, str, 10);
+	strcpy_s(name_piture, "D:\\test\\");
+	strcat_s(name_piture, str);
+	strcat_s(name_piture, "_components.png");
+	imwrite(name_piture, output3);
+    ///imwrite ( "components.png",output3);
+	///imshow("Components", output3);
 #endif
 
     // Make chains of components	(制作组件链)
